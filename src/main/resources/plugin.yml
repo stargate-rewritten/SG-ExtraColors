@@ -1,8 +1,9 @@
 name: StargateExtraColors
-main: dev.thorinwasher.extracolors.Stargate
+main: dev.thorinwasher.extracolors.ExtraColors
 version: @version@
-description: Stargate mod for Bukkit
+description: A style and customization addon for stargate
 authors: [ Thorin ]
 website: https://discord.gg/mTaHuK6BVa
 api-version: 1.15
 softdepend: [ ColorBukkit ]
+depend: [Stargate]

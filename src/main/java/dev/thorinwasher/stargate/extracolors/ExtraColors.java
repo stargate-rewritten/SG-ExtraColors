@@ -1,4 +1,4 @@
-package dev.thorinwasher.extracolors;
+package dev.thorinwasher.stargate.extracolors;
 
 import org.bukkit.plugin.java.JavaPlugin;
 

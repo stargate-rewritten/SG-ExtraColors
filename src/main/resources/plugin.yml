@@ -1,5 +1,5 @@
 name: StargateExtraColors
-main: dev.thorinwasher.extracolors.ExtraColors
+main: dev.thorinwasher.stargate.extracolors.ExtraColors
 version: @version@
 description: A style and customization addon for stargate
 authors: [ Thorin ]

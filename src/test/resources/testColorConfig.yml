@@ -1,0 +1,32 @@
+styling:
+  # Default text color
+  text: GRAY
+  # Default pointer color
+  pointer: BLUE
+  # Default errorColor color
+  error: RED
+  # Default network color
+  network: GREEN
+  # Whether the signs should be glowing
+  glowing: true
+  # Exceptions to default settings
+  STARGATE_FLAG:
+    value: ALWAYS_ON
+    text: BLACK
+    pointer: WHITE
+    # Exceptions to always on gates settings
+    STARGATE_PORTAL_DESIGN:
+      value: something.gate
+      text: RED
+    STARGATE_SIGN_MATERIAL:
+      value: OAK_WALL_SIGN
+      text: AQUA
+    STARGATE_NETWORK:
+      value: network
+      text: DARK_BLUE
+    STARGATE_PLAYER_OWNER_UUID:
+      value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
+    STARGATE_PLAYER_ACTIVATOR_UUID:
+      value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
+    STARGATE_PORTAL_WORLD:
+      value: world

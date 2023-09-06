@@ -1,0 +1,84 @@
+package dev.thorinwasher.stargate.customizations.config;
+
+import be.seeseemelk.mockbukkit.MockBukkit;
+import be.seeseemelk.mockbukkit.ServerMock;
+import be.seeseemelk.mockbukkit.WorldMock;
+import dev.thorinwasher.stargate.customizations.StargateCustomizations;
+import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
+import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
+import dev.thorinwasher.stargate.customizations.mock.GateMock;
+import dev.thorinwasher.stargate.customizations.mock.NetworkMock;
+import dev.thorinwasher.stargate.customizations.mock.PortalMock;
+import net.md_5.bungee.api.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.sgrewritten.stargate.api.gate.GateAPI;
+import org.sgrewritten.stargate.api.network.portal.RealPortal;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Set;
+import java.util.logging.Level;
+
+class ColorConfigTest {
+
+    private ColorConfig colorConfig;
+    private NetworkMock networkMock;
+    private ServerMock server;
+    private WorldMock ignoredWorld;
+    private Location ignoredExitLocation;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        this.colorConfig = new ColorConfig();
+        this.server = MockBukkit.mock();
+        try(InputStream stream = new FileInputStream("src/test/resources/testColorConfig.yml")) {
+            this.colorConfig.load(stream);
+        }
+        this.networkMock = new NetworkMock("ignoredName");
+        this.ignoredWorld = server.addSimpleWorld("ignored");
+        this.ignoredExitLocation = new Location(ignoredWorld, 0, 0, 0);
+    }
+
+    @AfterEach
+    void tearDown(){
+        MockBukkit.unmock();
+    }
+    @Test
+    void getDefaultTheme(){
+        GateAPI gate = new GateMock("ignored.gate");
+        RealPortal portal = new PortalMock(gate,networkMock,ignoredExitLocation);
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN);
+        Assertions.assertEquals(ChatColor.GRAY, theme.textColor());
+        Assertions.assertEquals(ChatColor.BLUE, theme.pointerColor());
+        Assertions.assertEquals(ChatColor.RED, theme.errorColor());
+        Assertions.assertEquals(ChatColor.GREEN, theme.networkColor());
+    }
+
+    @Test
+    void getFlagDeterminedColor(){
+        GateAPI gate = new GateMock("ignored.gate");
+        RealPortal portal = new PortalMock(gate, networkMock, ignoredExitLocation, Set.of('A'));
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN);
+        Assertions.assertEquals(ChatColor.BLACK, theme.textColor());
+        Assertions.assertEquals(ChatColor.WHITE, theme.pointerColor());
+        Assertions.assertEquals(ChatColor.RED, theme.errorColor());
+        Assertions.assertEquals(ChatColor.GREEN, theme.networkColor());
+    }
+
+    @Test
+    void getFlagAndGateDeterminedColor(){
+        GateAPI gate = new GateMock("something.gate");
+        RealPortal portal = new PortalMock(gate, networkMock, ignoredExitLocation, Set.of('A'));
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN);
+        Assertions.assertEquals(ChatColor.RED, theme.textColor());
+        Assertions.assertEquals(ChatColor.WHITE, theme.pointerColor());
+        Assertions.assertEquals(ChatColor.RED, theme.errorColor());
+        Assertions.assertEquals(ChatColor.GREEN, theme.networkColor());
+    }
+}

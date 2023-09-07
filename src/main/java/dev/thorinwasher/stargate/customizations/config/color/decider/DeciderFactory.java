@@ -1,5 +1,6 @@
 package dev.thorinwasher.stargate.customizations.config.color.decider;
 
+import dev.thorinwasher.stargate.customizations.StargateCustomizations;
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfigOption;
 import dev.thorinwasher.stargate.customizations.config.color.ColorDeciderType;
 import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
@@ -8,11 +9,13 @@ import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import dev.thorinwasher.stargate.customizations.util.ColorUtils;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
+import org.checkerframework.checker.units.qual.C;
 import org.sgrewritten.stargate.api.network.portal.PortalFlag;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class DeciderFactory {
 
@@ -31,32 +34,23 @@ public class DeciderFactory {
 
     public static BaseColorDecider getBaseColorDecider(Map<String,Object> data, ColorTheme defaultTheme){
         ColorTheme theme = createTheme(defaultTheme,data);
+        StargateCustomizations.log(Level.FINEST, data.keySet().toString());
         return new BaseColorDecider(theme);
     }
 
     private static ColorTheme createTheme(ColorTheme parentTheme, Map<String,Object> data){
-        Map<ColorThemeOption,String> colorThemeOptions = new HashMap<>();
+        Map<ColorThemeOption,ChatColor> colorThemeOptions = new HashMap<>();
         for(ColorThemeOption option : ColorThemeOption.values()){
             if(data.get(option.name().toLowerCase()) instanceof String optionValue){
-                colorThemeOptions.put(option,optionValue);
+                colorThemeOptions.put(option,ColorUtils.getColorFromString(optionValue));
             }
         }
-        Map<ColorThemeOption, ChatColor> colorThemeOptionChatColorMap = new HashMap<>();
-        for(ColorThemeOption option : ColorThemeOption.values()){
-            String childThemeOption = colorThemeOptions.get(option);
-            if(childThemeOption == null){
-                colorThemeOptionChatColorMap.put(option, parentTheme.getColor(option));
-            } else {
-                colorThemeOptionChatColorMap.put(option, ColorUtils.getColorFromString(childThemeOption));
-            }
-        }
-        Object glowingObject = data.get(ColorConfigOption.GLOWING.name().toLowerCase());
-        boolean glowing = glowingObject instanceof Boolean ? (boolean) glowingObject : parentTheme.isGlowing();
-        return new ColorTheme(colorThemeOptionChatColorMap.get(ColorThemeOption.TEXT),
-                colorThemeOptionChatColorMap.get(ColorThemeOption.POINTER),
-                colorThemeOptionChatColorMap.get(ColorThemeOption.ERROR),
-                colorThemeOptionChatColorMap.get(ColorThemeOption.NETWORK),
-                glowing);
+        ColorTheme overrideTheme = new ColorTheme(colorThemeOptions.get(ColorThemeOption.TEXT),
+                colorThemeOptions.get(ColorThemeOption.POINTER),
+                colorThemeOptions.get(ColorThemeOption.ERROR),
+                colorThemeOptions.get(ColorThemeOption.NETWORK),
+                (Boolean) data.get(ColorConfigOption.GLOWING.name().toLowerCase()));
+        return new ColorTheme(overrideTheme, parentTheme);
     }
 
     private static ColorDecider createColorDecider(String key, Object value, ColorTheme theme) throws ParseException {

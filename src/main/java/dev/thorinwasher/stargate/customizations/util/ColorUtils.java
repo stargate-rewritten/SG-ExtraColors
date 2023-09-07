@@ -1,10 +1,11 @@
 package dev.thorinwasher.stargate.customizations.util;
 
 import net.md_5.bungee.api.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 public class ColorUtils {
 
-    public static ChatColor getColorFromString(String colorString){
+    public static @Nullable ChatColor getColorFromString(@Nullable String colorString){
         try{
             return ChatColor.of(colorString);
         } catch (IllegalArgumentException ignored){

@@ -30,3 +30,7 @@ styling:
       value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
     STARGATE_PORTAL_WORLD:
       value: world
+
+destination_styling_overrides:
+  # Default destination override
+  error: DARK_BLUE

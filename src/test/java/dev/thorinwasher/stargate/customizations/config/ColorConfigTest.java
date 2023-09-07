@@ -32,6 +32,7 @@ class ColorConfigTest {
     private ServerMock server;
     private WorldMock ignoredWorld;
     private Location ignoredExitLocation;
+    private GateMock ignoredGate;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -43,6 +44,7 @@ class ColorConfigTest {
         this.networkMock = new NetworkMock("ignoredName");
         this.ignoredWorld = server.addSimpleWorld("ignored");
         this.ignoredExitLocation = new Location(ignoredWorld, 0, 0, 0);
+        this.ignoredGate = new GateMock("ignored.gate");
     }
 
     @AfterEach
@@ -50,10 +52,9 @@ class ColorConfigTest {
         MockBukkit.unmock();
     }
     @Test
-    void getDefaultTheme(){
-        GateAPI gate = new GateMock("ignored.gate");
-        RealPortal portal = new PortalMock(gate,networkMock,ignoredExitLocation);
-        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN);
+    void getPortalColorTheme_getDefaultTheme(){
+        RealPortal portal = new PortalMock(ignoredGate,networkMock,ignoredExitLocation);
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN,null);
         Assertions.assertEquals(ChatColor.GRAY, theme.textColor());
         Assertions.assertEquals(ChatColor.BLUE, theme.pointerColor());
         Assertions.assertEquals(ChatColor.RED, theme.errorColor());
@@ -61,10 +62,9 @@ class ColorConfigTest {
     }
 
     @Test
-    void getFlagDeterminedColor(){
-        GateAPI gate = new GateMock("ignored.gate");
-        RealPortal portal = new PortalMock(gate, networkMock, ignoredExitLocation, Set.of('A'));
-        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN);
+    void getPortalColorTheme_getFlagDeterminedColor(){
+        RealPortal portal = new PortalMock(ignoredGate, networkMock, ignoredExitLocation, Set.of('A'));
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN,null);
         Assertions.assertEquals(ChatColor.BLACK, theme.textColor());
         Assertions.assertEquals(ChatColor.WHITE, theme.pointerColor());
         Assertions.assertEquals(ChatColor.RED, theme.errorColor());
@@ -72,13 +72,24 @@ class ColorConfigTest {
     }
 
     @Test
-    void getFlagAndGateDeterminedColor(){
+    void getPortalColorTheme_getFlagAndGateDeterminedColor(){
         GateAPI gate = new GateMock("something.gate");
         RealPortal portal = new PortalMock(gate, networkMock, ignoredExitLocation, Set.of('A'));
-        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN);
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN,null);
         Assertions.assertEquals(ChatColor.RED, theme.textColor());
         Assertions.assertEquals(ChatColor.WHITE, theme.pointerColor());
         Assertions.assertEquals(ChatColor.RED, theme.errorColor());
+        Assertions.assertEquals(ChatColor.GREEN, theme.networkColor());
+    }
+
+    @Test
+    void getPortalColorTheme_destinationOverride(){
+        RealPortal portal = new PortalMock(ignoredGate, networkMock, ignoredExitLocation);
+        RealPortal destination = new PortalMock(ignoredGate, networkMock, ignoredExitLocation);
+        ColorTheme theme = this.colorConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN,destination);
+        Assertions.assertEquals(ChatColor.GRAY, theme.textColor());
+        Assertions.assertEquals(ChatColor.BLUE, theme.pointerColor());
+        Assertions.assertEquals(ChatColor.DARK_BLUE, theme.errorColor());
         Assertions.assertEquals(ChatColor.GREEN, theme.networkColor());
     }
 }

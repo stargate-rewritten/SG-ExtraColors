@@ -5,6 +5,8 @@ import dev.thorinwasher.stargate.customizations.config.color.decider.ColorDecide
 import dev.thorinwasher.stargate.customizations.config.color.decider.DeciderFactory;
 import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import org.bukkit.Material;
+import org.jetbrains.annotations.Nullable;
+import org.sgrewritten.stargate.Stargate;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
 import org.yaml.snakeyaml.Yaml;
 
@@ -13,15 +15,22 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class ColorConfig {
+    private ColorDecider baseDecider;
+    private ColorDecider destinationOverrideBaseDecider;
 
-    ColorTheme defaultTheme = ColorTheme.DEFAULT;
-    ColorDecider baseDecider;
-
-    public ColorTheme getPortalColorTheme(RealPortal portal, Material signMaterial) {
-        return getPortalColorTheme(portal, signMaterial, baseDecider);
+    public ColorTheme getPortalColorTheme(RealPortal portal, Material signMaterial, @Nullable RealPortal destination) {
+        ColorTheme overrideTheme = ColorTheme.NONE;
+        if(destination != null){
+            overrideTheme = getPortalColorTheme(destination,signMaterial, destinationOverrideBaseDecider);
+        }
+        ColorTheme theme = getPortalColorTheme(portal, signMaterial, baseDecider);
+        return new ColorTheme(overrideTheme,theme);
     }
 
     private ColorTheme getPortalColorTheme(RealPortal portal, Material signMaterial, ColorDecider colorDecider) {
+        if(colorDecider == null){
+            return ColorTheme.NONE;
+        }
         for (ColorDecider child : colorDecider.getChildren()) {
             if(child.isApplicable(portal,signMaterial)){
                 return getPortalColorTheme(portal,signMaterial,child);
@@ -29,6 +38,8 @@ public class ColorConfig {
         }
         return colorDecider.getTheme();
     }
+
+
 
     public void load(File file) throws IOException {
         try(InputStream stream = new FileInputStream(file) ){
@@ -40,9 +51,15 @@ public class ColorConfig {
         Yaml yaml = new Yaml();
         Map<String, Object> data = yaml.load(stream);
 
+        if(data.get(ColorConfigOption.DESTINATION_STYLING_OVERRIDES.name().toLowerCase()) instanceof Map<?,?> overrideData){
+            Map<String,Object> overrideDataConverted = (Map<String,Object>) overrideData;
+            destinationOverrideBaseDecider = DeciderFactory.getBaseColorDecider(overrideDataConverted, ColorTheme.NONE);
+            StargateCustomizations.log(Level.FINEST,destinationOverrideBaseDecider.getTheme().toString());
+            recursiveLoad(destinationOverrideBaseDecider,overrideDataConverted, ColorConfigOption.DESTINATION_STYLING_OVERRIDES.name().toLowerCase());
+        }
         if(data.get(ColorConfigOption.STYLING.name().toLowerCase()) instanceof Map<?,?> baseData){
             Map<String,Object> baseDataConverted = (Map<String,Object>) baseData;
-            baseDecider = DeciderFactory.getBaseColorDecider(baseDataConverted, defaultTheme);
+            baseDecider = DeciderFactory.getBaseColorDecider(baseDataConverted, ColorTheme.DEFAULT);
             recursiveLoad(baseDecider, baseDataConverted, ColorConfigOption.STYLING.name().toLowerCase());
         }
     }
@@ -55,7 +72,7 @@ public class ColorConfig {
                 if(data.get(key) instanceof Map<?,?> childData) {
                     ColorDecider child = DeciderFactory.getDecider(parentDecider, key, (Map<String, Object>) childData);
                     parentDecider.addChildDecider(child);
-                    recursiveLoad(child,(Map<String, Object>) childData,childPath);
+                    recursiveLoad(child,(Map<String, Object>) childData, childPath);
                 }
             } catch(IllegalArgumentException ignored) {}
             catch (ParseException e) {

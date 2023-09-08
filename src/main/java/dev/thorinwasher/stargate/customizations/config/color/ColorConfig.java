@@ -6,7 +6,6 @@ import dev.thorinwasher.stargate.customizations.config.color.decider.DeciderFact
 import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
-import org.sgrewritten.stargate.Stargate;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
 import org.yaml.snakeyaml.Yaml;
 
@@ -57,10 +56,10 @@ public class ColorConfig {
             StargateCustomizations.log(Level.FINEST,destinationOverrideBaseDecider.getTheme().toString());
             recursiveLoad(destinationOverrideBaseDecider,overrideDataConverted, ColorConfigOption.DESTINATION_STYLING_OVERRIDES.name().toLowerCase());
         }
-        if(data.get(ColorConfigOption.STYLING.name().toLowerCase()) instanceof Map<?,?> baseData){
+        if(data.get(ColorConfigOption.STYLE.name().toLowerCase()) instanceof Map<?,?> baseData){
             Map<String,Object> baseDataConverted = (Map<String,Object>) baseData;
             baseDecider = DeciderFactory.getBaseColorDecider(baseDataConverted, ColorTheme.DEFAULT);
-            recursiveLoad(baseDecider, baseDataConverted, ColorConfigOption.STYLING.name().toLowerCase());
+            recursiveLoad(baseDecider, baseDataConverted, ColorConfigOption.STYLE.name().toLowerCase());
         }
     }
 

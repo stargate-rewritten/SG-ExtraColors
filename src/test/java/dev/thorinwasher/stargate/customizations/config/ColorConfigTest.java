@@ -12,6 +12,7 @@ import dev.thorinwasher.stargate.customizations.mock.PortalMock;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,5 +92,20 @@ class ColorConfigTest {
         Assertions.assertEquals(ChatColor.BLUE, theme.pointerColor());
         Assertions.assertEquals(ChatColor.DARK_BLUE, theme.errorColor());
         Assertions.assertEquals(ChatColor.GREEN, theme.networkColor());
+    }
+
+    @Test
+    void getPortalColorTheme_DefaultConfig() throws IOException {
+        try(InputStream stream = StargateCustomizations.class.getResourceAsStream("/color.yml")){
+            ColorConfig defaultConfig = new ColorConfig();
+            defaultConfig.load(stream);
+            RealPortal portal = new PortalMock(ignoredGate, networkMock, ignoredExitLocation);
+            ColorTheme theme = defaultConfig.getPortalColorTheme(portal, Material.ACACIA_WALL_SIGN, null);
+            Assertions.assertNotNull(theme.errorColor());
+            Assertions.assertNotNull(theme.textColor());
+            Assertions.assertNotNull(theme.pointerColor());
+            Assertions.assertNotNull(theme.networkColor());
+            Assertions.assertNotNull(theme.isGlowing());
+        }
     }
 }

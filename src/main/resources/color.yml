@@ -1,0 +1,35 @@
+# An example of a custom colouring configuration.
+# For more information about valid formatting, see sgrewritten.org/colorconfig
+style:
+  # Default values
+  pointer: GREEN
+  # The below applies to all portals owned by the user "Dinnerbone"
+  STARGATE_PLAYER_OWNER_UUID:
+    value: ff6bfe79-ad09-4277-8b2b-d63e565dd145
+    pointer: RED
+    # The below settings apply to all of dinnerbone's portals that have the flag `A` (always-on)
+    STARGATE_FLAG:
+      value: ALWAYS_ON
+      text: BLACK
+  # This applies to all `A` (always-on) portals that are not owned by the user "dinnerbone".
+  # Note that effects are applied from the top down (i.e. the top level configurations closest to
+  # the top of the file will be applied before the top level configurations below them.
+  STARGATE_FLAG:
+    value: ALWAYS_ON
+    network: BLUE
+
+
+  # Remaining possible flags
+  STARGATE_PORTAL_DESIGN:
+    value: something.gate
+    text: RED
+  STARGATE_SIGN_MATERIAL:
+    value: OAK_WALL_SIGN
+    text: AQUA
+  STARGATE_NETWORK:
+    value: network
+    text: DARK_BLUE
+  STARGATE_PLAYER_ACTIVATOR_UUID:
+    value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
+  STARGATE_PORTAL_WORLD:
+    value: world

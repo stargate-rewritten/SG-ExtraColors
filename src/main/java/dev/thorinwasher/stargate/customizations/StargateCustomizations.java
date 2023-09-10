@@ -4,10 +4,15 @@ import dev.thorinwasher.stargate.customizations.config.ColorConfigType;
 import dev.thorinwasher.stargate.customizations.config.ConfigOption;
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
 import dev.thorinwasher.stargate.customizations.exception.InitializationException;
+import dev.thorinwasher.stargate.customizations.lineformatter.FormatterRegistry;
+import dev.thorinwasher.stargate.customizations.lineformatter.LineFormatterStorage;
 import dev.thorinwasher.stargate.customizations.listener.StargateListener;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.ServicesManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
+import org.sgrewritten.stargate.api.StargateAPI;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,13 +23,23 @@ public class StargateCustomizations extends JavaPlugin {
     private static final String CONFIG_FILE = "config.yml";
     private static final String COLOR_CONFIG_FILE = "color.yml";
     private ColorConfig colorConfig;
+    private FormatterRegistry registry;
+    private StargateAPI stargateAPI;
+    private static Level logLevel;
 
     public static void log(Level level, String msg) {
         if(instance == null){
             System.out.println("[" + level + "]: " + msg);
             return;
         }
-        instance.getLogger().log(level,msg);
+        if (level.intValue() < logLevel.intValue()) {
+            return;
+        }
+        if (level.intValue() < Level.INFO.intValue()) {
+            instance.getLogger().log(Level.INFO, msg);
+        } else {
+            instance.getLogger().log(level, msg);
+        }
     }
 
     @Override
@@ -40,9 +55,14 @@ public class StargateCustomizations extends JavaPlugin {
     private void load() throws InitializationException {
         instance = this;
         loadConfig();
+        logLevel = Level.parse(getConfig().getString(ConfigOption.LOGGING_LEVEL.getKey(),Level.INFO.getName()));
         this.colorConfig = loadColorConfig();
         if(colorConfig != null) {
-            Bukkit.getPluginManager().registerEvents(new StargateListener(this.colorConfig), this);
+            this.stargateAPI = this.getStargateAPI();
+            LineFormatterStorage storage = new LineFormatterStorage(stargateAPI.getRegistry());
+            this.registry = new FormatterRegistry();
+            storage.load(registry, colorConfig);
+            Bukkit.getPluginManager().registerEvents(new StargateListener(this.colorConfig,registry,stargateAPI.getRegistry()), this);
         }
 
     }
@@ -75,12 +95,23 @@ public class StargateCustomizations extends JavaPlugin {
         }
     }
 
-    public ColorConfig getColorConfigFromFile() throws IOException {
+    private ColorConfig getColorConfigFromFile() throws IOException {
         if(!new File(this.getDataFolder(),COLOR_CONFIG_FILE).exists()){
             this.saveResource("/" + COLOR_CONFIG_FILE,false);
         }
         ColorConfig config = new ColorConfig();
         config.load(new File(this.getDataFolder(),COLOR_CONFIG_FILE));
         return config;
+    }
+
+    private StargateAPI getStargateAPI() throws InitializationException {
+        ServicesManager servicesManager = this.getServer().getServicesManager();
+        RegisteredServiceProvider<StargateAPI> stargateProvider = servicesManager.getRegistration(StargateAPI.class);
+        if (stargateProvider != null) {
+            return stargateProvider.getProvider();
+        } else {
+            throw new InitializationException("Unable to hook into Stargate. Make sure the Stargate plugin is installed " +
+                    "and enabled.");
+        }
     }
 }

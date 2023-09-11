@@ -6,6 +6,7 @@ import dev.thorinwasher.stargate.customizations.config.color.decider.DeciderFact
 import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
+import org.sgrewritten.stargate.api.network.portal.Portal;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
 import org.yaml.snakeyaml.Yaml;
 
@@ -17,7 +18,7 @@ public class ColorConfig {
     private ColorDecider baseDecider;
     private ColorDecider destinationOverrideBaseDecider;
 
-    public ColorTheme getPortalColorTheme(RealPortal portal, Material signMaterial, @Nullable RealPortal destination) {
+    public ColorTheme getPortalColorTheme(RealPortal portal, Material signMaterial, @Nullable Portal destination) {
         ColorTheme overrideTheme = ColorTheme.NONE;
         if(destination != null){
             overrideTheme = getPortalColorTheme(destination,signMaterial, destinationOverrideBaseDecider);
@@ -26,7 +27,7 @@ public class ColorConfig {
         return new ColorTheme(overrideTheme,theme);
     }
 
-    private ColorTheme getPortalColorTheme(RealPortal portal, Material signMaterial, ColorDecider colorDecider) {
+    private ColorTheme getPortalColorTheme(Portal portal, Material signMaterial, ColorDecider colorDecider) {
         if(colorDecider == null){
             return ColorTheme.NONE;
         }

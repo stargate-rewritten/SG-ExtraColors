@@ -2,6 +2,7 @@ package dev.thorinwasher.stargate.customizations.config.color.decider;
 
 import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
 import org.bukkit.Material;
+import org.sgrewritten.stargate.api.network.portal.Portal;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
 
 public class NetworkDecider extends AbstractDecider {
@@ -13,7 +14,7 @@ public class NetworkDecider extends AbstractDecider {
     }
 
     @Override
-    public boolean isApplicable(RealPortal portal, Material signMaterial) {
+    public boolean isApplicable(Portal portal, Material signMaterial) {
         return portal.getNetwork().getName().equals(networkName);
     }
 }

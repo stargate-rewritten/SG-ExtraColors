@@ -11,6 +11,7 @@ import org.sgrewritten.stargate.api.gate.GateStructureType;
 import org.sgrewritten.stargate.api.network.portal.BlockLocation;
 import org.sgrewritten.stargate.api.network.portal.PortalPosition;
 import org.sgrewritten.stargate.api.network.portal.PositionType;
+import org.sgrewritten.stargate.api.network.portal.format.SignLine;
 
 import java.util.List;
 
@@ -21,8 +22,9 @@ public class GateMock implements GateAPI {
     public GateMock(String formatName){
         this.gateFormat = new GateFormatMock(formatName);
     }
+
     @Override
-    public void drawControlMechanisms(String[] strings, boolean b) {
+    public void drawControlMechanisms(SignLine[] signLines, boolean b) {
 
     }
 

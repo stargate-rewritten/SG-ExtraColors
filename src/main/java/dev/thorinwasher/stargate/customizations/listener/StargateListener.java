@@ -1,6 +1,5 @@
 package dev.thorinwasher.stargate.customizations.listener;
 
-import dev.thorinwasher.stargate.customizations.StargateCustomizations;
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
 import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import dev.thorinwasher.stargate.customizations.lineformatter.CustomLineFormatter;
@@ -8,12 +7,15 @@ import dev.thorinwasher.stargate.customizations.lineformatter.FormatterRegistry;
 import dev.thorinwasher.stargate.customizations.metadata.MetaData;
 import dev.thorinwasher.stargate.customizations.metadata.MetaDataWriter;
 import org.bukkit.Location;
+import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.sgrewritten.stargate.api.event.StargateSignFormatEvent;
+import org.sgrewritten.stargate.api.event.gate.StargateSignFormatGateEvent;
+import org.sgrewritten.stargate.api.event.portal.StargateSignDyeChangePortalEvent;
 import org.sgrewritten.stargate.api.network.RegistryAPI;
 import org.sgrewritten.stargate.api.network.portal.PortalPosition;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
+import org.sgrewritten.stargate.api.network.portal.format.SignLine;
 
 import java.util.logging.Level;
 
@@ -30,32 +32,33 @@ public class StargateListener implements Listener {
     }
 
     @EventHandler
-    void onStargateFormatEvent(StargateSignFormatEvent event){
+    void onStargateFormatEvent(StargateSignFormatGateEvent event){
+        Sign sign = event.getSign();
+        CustomLineFormatter formatter = registry.getLineFormatter(sign.getLocation());
+        if(formatter == null){
+            formatter = new CustomLineFormatter(config,stargateRegistry.getPortalFromPortalPosition(event.getPortalPosition()),event.getSign().getType(),null);
+            registry.registerLineFormatter(sign.getLocation(),formatter);
+        } else{
+            for(SignLine line : event.getLines()){
+                formatter.modifyLine(line);
+            }
+        }
+    }
+
+    @EventHandler
+    void onStargateSignDyePortalEvent(StargateSignDyeChangePortalEvent event){
         if(!(event.getPortal() instanceof RealPortal realPortal)){
             return;
         }
-        Location location = event.getSign().getLocation();
-        CustomLineFormatter formatter = registry.getLineFormatter(location);
-        if(formatter == null){
-            formatter = new CustomLineFormatter(config,realPortal,event.getSign().getType(),null);
-            registry.registerLineFormatter(location,formatter);
-        } else if(event.getChangedSignColor() != null){
-            PortalPosition portalPosition = stargateRegistry.getPortalPosition(location);
-            if(portalPosition == null){
-                StargateCustomizations.log(Level.WARNING,"Could not find portal position for sign originating from portal " + realPortal.getNetwork().getId() + ":" + realPortal.getNetwork());
-                return;
-            }
-            String previousMetaData = portalPosition.getMetaData(realPortal);
-            String newMetaData = null;
-            try {
-                newMetaData = MetaDataWriter.addMetaData(MetaData.SIGN_COLOR, event.getSignColor().name(), previousMetaData);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return;
-            }
-            portalPosition.setMetaData(realPortal,newMetaData);
-            formatter.setDyeColor(event.getSignColor());
+        CustomLineFormatter formatter = registry.getLineFormatter(event.getLocation());
+        formatter.setDyeColor(event.getColorChange());
+        PortalPosition portalPosition = event.getPortalPosition();
+        String previousMetaData = portalPosition.getMetaData(realPortal);
+        String newMetaData = null;
+        try {
+            newMetaData = MetaDataWriter.addMetaData(MetaData.SIGN_COLOR, event.getColorChange().name(), previousMetaData);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        event.setLineFormatter(formatter);
     }
 }

@@ -1,5 +1,6 @@
 package dev.thorinwasher.stargate.customizations.listener;
 
+import dev.thorinwasher.stargate.customizations.StargateCustomizations;
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
 import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import dev.thorinwasher.stargate.customizations.lineformatter.CustomLineFormatter;
@@ -48,15 +49,16 @@ public class StargateListener implements Listener {
     @EventHandler
     void onStargateSignDyePortalEvent(StargateSignDyeChangePortalEvent event){
         if(!(event.getPortal() instanceof RealPortal realPortal)){
+            StargateCustomizations.log(Level.INFO,event.getPortal().getClass().getName());
             return;
         }
         CustomLineFormatter formatter = registry.getLineFormatter(event.getLocation());
         formatter.setDyeColor(event.getColorChange());
         PortalPosition portalPosition = event.getPortalPosition();
         String previousMetaData = portalPosition.getMetaData(realPortal);
-        String newMetaData = null;
         try {
-            newMetaData = MetaDataWriter.addMetaData(MetaData.SIGN_COLOR, event.getColorChange().name(), previousMetaData);
+            String newMetaData = MetaDataWriter.addMetaData(MetaData.SIGN_COLOR, event.getColorChange().name(), previousMetaData);
+            portalPosition.setMetaData(realPortal, newMetaData);
         } catch (ParseException e) {
             e.printStackTrace();
         }

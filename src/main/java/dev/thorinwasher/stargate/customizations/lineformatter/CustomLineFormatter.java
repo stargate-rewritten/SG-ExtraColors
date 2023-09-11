@@ -54,6 +54,10 @@ public class CustomLineFormatter {
 
     private void handleGeneralLine(SignLine line, ChatColor pointerColor, ChatColor textColor){
         List<StargateComponent> components = line.getComponents();
+        if(dyeColor != null){
+            pointerColor = ColorUtils.getChatColorFromDyeColor(dyeColor);
+            textColor = ColorUtils.getChatColorFromDyeColor(dyeColor);
+        }
         if(components.size() == 3){
             changeColorOfComponent(components.get(0),pointerColor);
             changeColorOfComponent(components.get(1),textColor);

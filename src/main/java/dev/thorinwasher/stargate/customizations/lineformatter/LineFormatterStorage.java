@@ -1,10 +1,6 @@
 package dev.thorinwasher.stargate.customizations.lineformatter;
 
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
-import dev.thorinwasher.stargate.customizations.exception.ParseException;
-import dev.thorinwasher.stargate.customizations.metadata.MetaData;
-import dev.thorinwasher.stargate.customizations.metadata.MetaDataReader;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.sgrewritten.stargate.api.network.RegistryAPI;
 import org.sgrewritten.stargate.api.network.portal.BlockLocation;

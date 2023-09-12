@@ -1,24 +1,14 @@
 package dev.thorinwasher.stargate.customizations.listener;
 
-import dev.thorinwasher.stargate.customizations.StargateCustomizations;
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
-import dev.thorinwasher.stargate.customizations.exception.ParseException;
 import dev.thorinwasher.stargate.customizations.lineformatter.CustomLineFormatter;
 import dev.thorinwasher.stargate.customizations.lineformatter.FormatterRegistry;
-import dev.thorinwasher.stargate.customizations.metadata.MetaData;
-import dev.thorinwasher.stargate.customizations.metadata.MetaDataWriter;
-import org.bukkit.Location;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.sgrewritten.stargate.api.event.gate.StargateSignFormatGateEvent;
-import org.sgrewritten.stargate.api.event.portal.StargateSignDyeChangePortalEvent;
 import org.sgrewritten.stargate.api.network.RegistryAPI;
-import org.sgrewritten.stargate.api.network.portal.PortalPosition;
-import org.sgrewritten.stargate.api.network.portal.RealPortal;
 import org.sgrewritten.stargate.api.network.portal.format.SignLine;
-
-import java.util.logging.Level;
 
 public class StargateListener implements Listener {
 

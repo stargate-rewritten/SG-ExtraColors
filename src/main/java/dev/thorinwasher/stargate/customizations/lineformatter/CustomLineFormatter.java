@@ -2,18 +2,14 @@ package dev.thorinwasher.stargate.customizations.lineformatter;
 
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
 import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
-import dev.thorinwasher.stargate.customizations.util.ColorUtils;
 import net.md_5.bungee.api.ChatColor;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.jetbrains.annotations.Nullable;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
 import org.sgrewritten.stargate.api.network.portal.format.PortalLine;
 import org.sgrewritten.stargate.api.network.portal.format.SignLine;
 import org.sgrewritten.stargate.api.network.portal.format.StargateComponent;
 
 import java.util.List;
-import java.util.logging.Level;
 
 public class CustomLineFormatter {
 

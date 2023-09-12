@@ -30,15 +30,7 @@ public class LineFormatterStorage {
             }
             RealPortal portal = registry.getPortalFromPortalPosition(portalPosition);
             Material signMaterial = location.getLocation().getBlock().getType();
-            String metaDataString = portalPosition.getMetaData(portal);
-            DyeColor color = null;
-            try {
-                String colorString = MetaDataReader.getData(metaDataString, MetaData.SIGN_COLOR);
-                if(colorString != null) {
-                    color = DyeColor.valueOf(colorString);
-                }
-            } catch (ParseException ignored) {}
-            formatterRegistry.registerLineFormatter(location.getLocation(),new CustomLineFormatter(config,portal,signMaterial,color));
+            formatterRegistry.registerLineFormatter(location.getLocation(),new CustomLineFormatter(config,portal,signMaterial));
         }
     }
 }

@@ -1,22 +1,16 @@
 package dev.thorinwasher.stargate.customizations.lineformatter;
 
-import dev.thorinwasher.stargate.customizations.StargateCustomizations;
 import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
 import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
 import dev.thorinwasher.stargate.customizations.util.ColorUtils;
-import net.kyori.adventure.text.Component;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.jetbrains.annotations.Nullable;
-import org.sgrewritten.stargate.api.network.Network;
-import org.sgrewritten.stargate.api.network.portal.Portal;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
 import org.sgrewritten.stargate.api.network.portal.format.PortalLine;
 import org.sgrewritten.stargate.api.network.portal.format.SignLine;
 import org.sgrewritten.stargate.api.network.portal.format.StargateComponent;
-import org.sgrewritten.stargate.network.portal.formatting.HighlightingStyle;
-import org.sgrewritten.stargate.network.portal.formatting.LineFormatter;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -27,14 +21,12 @@ public class CustomLineFormatter {
     private final RealPortal portal;
     private final Material signMaterial;
     private final ColorTheme theme;
-    private DyeColor dyeColor;
 
-    public CustomLineFormatter(ColorConfig config, RealPortal portal, Material signMaterial, @Nullable DyeColor dyeColor){
+    public CustomLineFormatter(ColorConfig config, RealPortal portal, Material signMaterial){
         this.config = config;
         this.portal = portal;
         this.signMaterial = signMaterial;
         this.theme = config.getPortalColorTheme(portal,signMaterial,null);
-        this.dyeColor = dyeColor;
     }
 
     public void modifyLine(SignLine line){
@@ -54,10 +46,6 @@ public class CustomLineFormatter {
 
     private void handleGeneralLine(SignLine line, ChatColor pointerColor, ChatColor textColor){
         List<StargateComponent> components = line.getComponents();
-        if(dyeColor != null){
-            pointerColor = ColorUtils.getChatColorFromDyeColor(dyeColor);
-            textColor = ColorUtils.getChatColorFromDyeColor(dyeColor);
-        }
         if(components.size() == 3){
             changeColorOfComponent(components.get(0),pointerColor);
             changeColorOfComponent(components.get(1),textColor);
@@ -90,9 +78,5 @@ public class CustomLineFormatter {
 
     private void handleNetworkLine(SignLine line){
         handleGeneralLine(line,theme.pointerColor(),theme.networkColor());
-    }
-
-    public void setDyeColor(DyeColor dyeColor) {
-        this.dyeColor = dyeColor;
     }
 }

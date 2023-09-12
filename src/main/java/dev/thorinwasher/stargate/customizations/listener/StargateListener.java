@@ -37,30 +37,12 @@ public class StargateListener implements Listener {
         Sign sign = event.getSign();
         CustomLineFormatter formatter = registry.getLineFormatter(sign.getLocation());
         if(formatter == null){
-            formatter = new CustomLineFormatter(config,stargateRegistry.getPortalFromPortalPosition(event.getPortalPosition()),event.getSign().getType(),null);
+            formatter = new CustomLineFormatter(config,stargateRegistry.getPortalFromPortalPosition(event.getPortalPosition()),event.getSign().getType());
             registry.registerLineFormatter(sign.getLocation(),formatter);
         } else{
             for(SignLine line : event.getLines()){
                 formatter.modifyLine(line);
             }
-        }
-    }
-
-    @EventHandler
-    void onStargateSignDyePortalEvent(StargateSignDyeChangePortalEvent event){
-        if(!(event.getPortal() instanceof RealPortal realPortal)){
-            StargateCustomizations.log(Level.INFO,event.getPortal().getClass().getName());
-            return;
-        }
-        CustomLineFormatter formatter = registry.getLineFormatter(event.getLocation());
-        formatter.setDyeColor(event.getColorChange());
-        PortalPosition portalPosition = event.getPortalPosition();
-        String previousMetaData = portalPosition.getMetaData(realPortal);
-        try {
-            String newMetaData = MetaDataWriter.addMetaData(MetaData.SIGN_COLOR, event.getColorChange().name(), previousMetaData);
-            portalPosition.setMetaData(realPortal, newMetaData);
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 }

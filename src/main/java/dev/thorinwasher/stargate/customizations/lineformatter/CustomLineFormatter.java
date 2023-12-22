@@ -18,15 +18,15 @@ public class CustomLineFormatter {
     private final Material signMaterial;
     private final ColorTheme theme;
 
-    public CustomLineFormatter(ColorConfig config, RealPortal portal, Material signMaterial){
+    public CustomLineFormatter(ColorConfig config, RealPortal portal, Material signMaterial) {
         this.config = config;
         this.portal = portal;
         this.signMaterial = signMaterial;
-        this.theme = config.getPortalColorTheme(portal,signMaterial,null);
+        this.theme = config.getPortalColorTheme(portal, signMaterial, null);
     }
 
-    public void modifyLine(SignLine line){
-        switch(line.getType()){
+    public void modifyLine(SignLine line) {
+        switch (line.getType()) {
             case TEXT -> handleTextLine(line);
             case ERROR -> handleErrorLine(line);
             case THIS_PORTAL -> handleThisPortalLine(line);
@@ -35,44 +35,47 @@ public class CustomLineFormatter {
         }
     }
 
-    private void changeColorOfComponent(StargateComponent component, ChatColor color){
+    private void changeColorOfComponent(StargateComponent component, ChatColor color) {
         String text = ChatColor.stripColor(component.getLegacyText());
         component.setLegacyText(color + text);
     }
 
-    private void handleGeneralLine(SignLine line, ChatColor pointerColor, ChatColor textColor){
+    private void handleGeneralLine(SignLine line, ChatColor pointerColor, ChatColor textColor) {
+        if (portal.isDestroyed()) {
+            return;
+        }
         List<StargateComponent> components = line.getComponents();
-        if(components.size() == 3){
-            changeColorOfComponent(components.get(0),pointerColor);
-            changeColorOfComponent(components.get(1),textColor);
-            changeColorOfComponent(components.get(2),pointerColor);
+        if (components.size() == 3) {
+            changeColorOfComponent(components.get(0), pointerColor);
+            changeColorOfComponent(components.get(1), textColor);
+            changeColorOfComponent(components.get(2), pointerColor);
         } else {
-            for(StargateComponent component : components){
-                changeColorOfComponent(component,textColor);
+            for (StargateComponent component : components) {
+                changeColorOfComponent(component, textColor);
             }
         }
     }
 
-    private void handleTextLine(SignLine line){
-        handleGeneralLine(line,theme.pointerColor(),theme.textColor());
+    private void handleTextLine(SignLine line) {
+        handleGeneralLine(line, theme.pointerColor(), theme.textColor());
     }
 
-    private void handleErrorLine(SignLine line){
-        handleGeneralLine(line,theme.pointerColor(),theme.errorColor());
+    private void handleErrorLine(SignLine line) {
+        handleGeneralLine(line, theme.pointerColor(), theme.errorColor());
     }
 
-    private void handleThisPortalLine(SignLine line){
-        handleGeneralLine(line,theme.pointerColor(),theme.textColor());
+    private void handleThisPortalLine(SignLine line) {
+        handleGeneralLine(line, theme.pointerColor(), theme.textColor());
     }
 
-    private void handleOtherPortalLine(SignLine line){
-        if(line instanceof PortalLine portalLine){
-            ColorTheme theme = config.getPortalColorTheme(this.portal,this.signMaterial,portalLine.getPortal());
-            handleGeneralLine(line,theme.pointerColor(), theme.textColor());
+    private void handleOtherPortalLine(SignLine line) {
+        if (line instanceof PortalLine portalLine) {
+            ColorTheme theme = config.getPortalColorTheme(this.portal, this.signMaterial, portalLine.getPortal());
+            handleGeneralLine(line, theme.pointerColor(), theme.textColor());
         }
     }
 
-    private void handleNetworkLine(SignLine line){
-        handleGeneralLine(line,theme.pointerColor(),theme.networkColor());
+    private void handleNetworkLine(SignLine line) {
+        handleGeneralLine(line, theme.pointerColor(), theme.networkColor());
     }
 }

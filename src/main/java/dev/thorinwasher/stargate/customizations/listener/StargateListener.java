@@ -27,7 +27,7 @@ public class StargateListener implements Listener {
         Sign sign = event.getSign();
         CustomLineFormatter formatter = registry.getLineFormatter(sign.getLocation());
         if(formatter == null){
-            formatter = new CustomLineFormatter(config,stargateRegistry.getPortalFromPortalPosition(event.getPortalPosition()),event.getSign().getType());
+            formatter = new CustomLineFormatter(config,stargateRegistry.getPortalFromPortalPosition(event.getPortalPosition()),sign.getType());
             registry.registerLineFormatter(sign.getLocation(),formatter);
         } else{
             for(SignLine line : event.getLines()){

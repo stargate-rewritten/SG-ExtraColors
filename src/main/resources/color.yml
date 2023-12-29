@@ -1,35 +1,67 @@
 # An example of a custom colouring configuration.
 # For more information about valid formatting, see sgrewritten.org/colorconfig
 style:
-  # Default values
-  pointer: GREEN
-  # The below applies to all portals owned by the user "Dinnerbone"
+# +----------------------------------------------------------------------------------------------+ #
+# |                                           EXAMPLE                                            | #
+# +----------------------------------------------------------------------------------------------+ #
+# The below style is an example of what's possible. For more information, see the EXPLANATION below.
+  error: RED # All gate disconnections show as red.
   STARGATE_PLAYER_OWNER_UUID:
-    value: ff6bfe79-ad09-4277-8b2b-d63e565dd145
-    pointer: RED
-    # The below settings apply to all of dinnerbone's portals that have the flag `A` (always-on)
+    value: ff6bfe79-ad09-4277-8b2b-d63e565dd145 # All gates owned by dinnerbone have blue text
+    text: BLUE
     STARGATE_FLAG:
-      value: ALWAYS_ON
-      text: BLACK
-  # This applies to all `A` (always-on) portals that are not owned by the user "dinnerbone".
-  # Note that effects are applied from the top down (i.e. the top level configurations closest to
-  # the top of the file will be applied before the top level configurations below them.
-  STARGATE_FLAG:
-    value: ALWAYS_ON
-    network: BLUE
-
-
-  # Remaining possible flags
-  STARGATE_PORTAL_DESIGN:
-    value: something.gate
-    text: RED
-  STARGATE_SIGN_MATERIAL:
-    value: OAK_WALL_SIGN
-    text: AQUA
-  STARGATE_NETWORK:
-    value: network
-    text: DARK_BLUE
-  STARGATE_PLAYER_ACTIVATOR_UUID:
-    value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
+        value: [PRIVATE, ALWAYS_ON] # Except for dinnerbone's private and hidden portals... those have pink text.
+        text: LIGHT_PURPLE
+        PORTAL_DESIGN:
+            value: wool.gate #"Unless they are made out of the wool design, then make them blue"
+            text: BLUE
+            pointer: YELLOW #Also make the pointers on such gates yellow, because why not?
   STARGATE_PORTAL_WORLD:
-    value: world
+    value: world #Notwithstanding dinnerbone's exceptions above, all portals in the world follow:
+    text: WHITE
+    pointer: YELLOW
+    network: AQUA
+    
+---
+# Everything below here is for explanation purposes only and will be ignored by the parser
+# +----------------------------------------------------------------------------------------------+ #
+# |                                          EXPLANATION                                         | #
+# +----------------------------------------------------------------------------------------------+ #
+
+# |                                    [ Available Content ]                                     | #
+# |__                   Values that change the colours used on gate's signs.                   __| #
+#                   Content may be specified at the top level or under a filter.
+# When under style, content applys as global defaults. When under a filter, content affects matches.
+  
+  pointer: YELLOW # Applies to the brackets and pointer characters on a sign (such as "> <").
+  network: BLUE # Applies to network names when displayed on a portal's sign (such as "central").
+  text: BLACK # Applies to all text shown on the sign not affected by the other values above.
+  error: RED # Applies to information indicating an inactive portal (such as "disconnected")
+
+
+# |                                    [ Available Filters ]                                     | #
+# |__      Values that limit the affect of content to certain groups or types of portals.      __| #
+  
+# FILTER_TYPE # Content below this text only applies to portals matching the filter's value (below)
+#   value: {} <--What to look for (acceptable values differ based on filter type)
+#   pointer: {}   /             [[ Optionally Specified Content]]
+#   network: {}  /_____  These are values of content as detailed above.
+#   text: {}     \       When specified under a filter, they only apply
+#   error: {}     \      to portals for which the filter value matches.
+
+  STARGATE_PLAYER_OWNER_UUID:
+    value: ff6bfe79-ad09-4277-8b2b-d63e565dd145 # All UUIDS are acceptable values for this filter.
+  STARGATE_FLAG:
+    value: ALWAYS_ON # All portal flags are valid values; use their sgrewritten.org/flagEnum
+  STARGATE_PORTAL_DESIGN:
+    value: nether.gate # The name of a portal's gatefile (design). See your gates folder.
+  STARGATE_SIGN_MATERIAL:
+    value: OAK_WALL_SIGN # All portals with a sign made of a certain material.
+        # (Accepts all values listed at the below link with "BlockData: Sign")
+        #      https://jd.papermc.io/paper/1.20/org/bukkit/Material.html
+  STARGATE_NETWORK:
+    value: central # A string representing a Stargate network name.
+  STARGATE_PLAYER_ACTIVATOR_UUID:
+    value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2 # All UUIDS are acceptable values for this filter.
+  STARGATE_PORTAL_WORLD:
+    value: world # A string for the world that a given stargate is located in.

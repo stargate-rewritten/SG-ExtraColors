@@ -12,7 +12,7 @@ An official expansion [module](https://sgrewritten.org/addons) for [Stargate Rew
 
 ## Features:
 
->  [!INFO]<br>For more details on any of these features, please see [this page](https://sgrewritten.org/infosgc).
+>  [!IMPORTANT]<br>For more details on any of these features, please see [this page](https://sgrewritten.org/infosgc).
 
 - File-based controls allowing for text, highlighters, network lines, and errors to be restyled for portals or groups thereof.
 - A web-based wrapper for the above. (WIP)

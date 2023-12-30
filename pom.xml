@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.thorinwasher.stargate</groupId>
   <artifactId>customizations</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name> StargateExtraColors</name>
+  <version>0.0.2-SNAPSHOT</version>
+  <name>StargateCustomizations</name>
   
   <repositories>
       <repository>

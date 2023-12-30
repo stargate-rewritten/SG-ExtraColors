@@ -1,7 +1,7 @@
 > [!CAUTION]<br>This is a NIGHTLY build from a development channel.<br>It has been minimally tested; do not use it on production instances!
 
 # Stargate Customizations
-An official expansion [module](https://sgrewritten.org/addons) for [Stargate Rewritten](https://sgrewritten.org) providing a plethor of cosmetic customizations configurable through files and a web user interface. Focuses on sign/gate colouring and theming.
+An official expansion [module](https://sgrewritten.org/addons) for [Stargate Rewritten](https://sgrewritten.org) providing a plethora of cosmetic customizations configurable through files and a web user interface. Focuses on sign/gate colouring and theming.
 
 ### 📤 [Downloads](https://sgrewritten.org/customizations)	📑 [Documentation](https://sgrewritten.org/infoSGC)	✉️ [Discord (Support)](https://sgrewritten.org/discord)
 

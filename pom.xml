@@ -2,8 +2,30 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.thorinwasher.stargate</groupId>
   <artifactId>customizations</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.1.0-ALPHA</version>
   <name>StargateCustomizations</name>
+  <description>A config expansion module for the Stargate Rewitten Bukkit Plugin.</description>
+  <url>https://sgrewitten.org/customizations</url>
+  <organization>
+        <name>Stargate Rewitten</name>
+        <url>https://sgrewitten.org</url>
+    </organization>
+    <developers>
+        <developer>
+            <id>Thorin</id>
+            <url>thorinwasher.dev</url>
+        </developer>
+        <developer>
+            <id>Knarvik</id>
+            <url>knarcraft.net</url>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>The contributors of the SGR Project</name>
+            <url>https://sgrewitten.org/credits</url>
+        </contributor>
+    </contributors>
   
   <repositories>
       <repository>

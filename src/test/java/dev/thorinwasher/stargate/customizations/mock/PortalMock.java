@@ -172,6 +172,16 @@ public class PortalMock implements RealPortal {
     }
 
     @Override
+    public void addFlag(Character character) throws UnsupportedOperationException {
+
+    }
+
+    @Override
+    public void removeFlag(Character character) throws UnsupportedOperationException {
+
+    }
+
+    @Override
     public String getAllFlagsString() {
         return null;
     }
@@ -219,5 +229,10 @@ public class PortalMock implements RealPortal {
     @Override
     public void activate(Player player) {
 
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return false;
     }
 }

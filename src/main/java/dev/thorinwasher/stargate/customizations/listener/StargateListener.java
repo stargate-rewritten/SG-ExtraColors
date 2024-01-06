@@ -21,9 +21,8 @@ public class StargateListener implements Listener {
         this.registry = registry;
         this.stargateRegistry = stargateRegistry;
     }
-
     @EventHandler
-    void onStargateFormatEvent(StargateSignFormatGateEvent event){
+    public void onStargateFormatEvent(StargateSignFormatGateEvent event){
         Sign sign = event.getSign();
         CustomLineFormatter formatter = registry.getLineFormatter(sign.getLocation());
         if(formatter == null){

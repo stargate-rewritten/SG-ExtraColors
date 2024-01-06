@@ -84,6 +84,11 @@ public class GateMock implements GateAPI {
     }
 
     @Override
+    public void calculatePortalPositions(boolean b) {
+
+    }
+
+    @Override
     public Location getTopLeft() {
         return null;
     }
@@ -105,6 +110,11 @@ public class GateMock implements GateAPI {
 
     @Override
     public void removePortalPosition(PortalPosition portalPosition) {
+
+    }
+
+    @Override
+    public void forceGenerateStructure() {
 
     }
 }

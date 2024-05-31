@@ -1,4 +1,4 @@
-> [!CAUTION]<br>This is a NIGHTLY build from a development channel.<br>It has been minimally tested; do not use it on production instances!
+> [!CAUTION]<br>**This is an ALPHA build designed for preliminary testing.**<br>Although minimally tested, this build is not yet recommended for production instances! If you do choose to use this build, please remember to make backups.
 
 # Stargate Customizations
 An official expansion [module](https://sgrewritten.org/addons) for [Stargate Rewritten](https://sgrewritten.org) providing a plethora of cosmetic customizations configurable through files and a web user interface. Focuses on sign/gate colouring and theming.
@@ -7,7 +7,7 @@ An official expansion [module](https://sgrewritten.org/addons) for [Stargate Rew
 
 ## Dependencies:
 
-- A server running [Stargate version 1.0.0.14 or higher](https://sgrewritten.org/download) on a [bukkit-compatible api](https://papermc.io/downloads/paper).
+- A server running [Stargate version 1.0.0.15 or higher](https://sgrewritten.org/download) on a [bukkit-compatible api](https://papermc.io/downloads/paper).
 - (Optional) The [Stargate Interfaces](https://sgrewritten.org/interfaces) module
 
 ## Features:

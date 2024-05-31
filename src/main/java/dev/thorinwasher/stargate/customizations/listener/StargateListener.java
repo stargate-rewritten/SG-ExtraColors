@@ -6,9 +6,10 @@ import dev.thorinwasher.stargate.customizations.lineformatter.FormatterRegistry;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.sgrewritten.stargate.api.event.gate.StargateSignFormatGateEvent;
+import org.sgrewritten.stargate.api.event.portal.StargateSignFormatPortalEvent;
 import org.sgrewritten.stargate.api.network.RegistryAPI;
-import org.sgrewritten.stargate.api.network.portal.format.SignLine;
+import org.sgrewritten.stargate.api.network.portal.RealPortal;
+import org.sgrewritten.stargate.api.network.portal.formatting.SignLine;
 
 public class StargateListener implements Listener {
 
@@ -22,11 +23,11 @@ public class StargateListener implements Listener {
         this.stargateRegistry = stargateRegistry;
     }
     @EventHandler
-    public void onStargateFormatEvent(StargateSignFormatGateEvent event){
+    public void onStargateFormatEvent(StargateSignFormatPortalEvent event){
         Sign sign = event.getSign();
         CustomLineFormatter formatter = registry.getLineFormatter(sign.getLocation());
         if(formatter == null){
-            formatter = new CustomLineFormatter(config,stargateRegistry.getPortalFromPortalPosition(event.getPortalPosition()),sign.getType());
+            formatter = new CustomLineFormatter(config, (RealPortal) event.getPortal(),sign.getType());
             registry.registerLineFormatter(sign.getLocation(),formatter);
         } else{
             for(SignLine line : event.getLines()){

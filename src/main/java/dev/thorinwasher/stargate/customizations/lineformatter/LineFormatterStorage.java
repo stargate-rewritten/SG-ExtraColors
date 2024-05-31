@@ -24,7 +24,7 @@ public class LineFormatterStorage {
             if(portalPosition.getPositionType() != PositionType.SIGN || !portalPosition.getPluginName().equals("Stargate")){
                 continue;
             }
-            RealPortal portal = registry.getPortalFromPortalPosition(portalPosition);
+            RealPortal portal = portalPosition.getPortal();
             Material signMaterial = location.getLocation().getBlock().getType();
             formatterRegistry.registerLineFormatter(location.getLocation(),new CustomLineFormatter(config,portal,signMaterial));
         }

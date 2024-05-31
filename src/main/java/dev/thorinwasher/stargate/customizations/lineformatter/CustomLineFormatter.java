@@ -5,9 +5,9 @@ import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
-import org.sgrewritten.stargate.api.network.portal.format.PortalLine;
-import org.sgrewritten.stargate.api.network.portal.format.SignLine;
-import org.sgrewritten.stargate.api.network.portal.format.StargateComponent;
+import org.sgrewritten.stargate.api.network.portal.formatting.PortalLine;
+import org.sgrewritten.stargate.api.network.portal.formatting.SignLine;
+import org.sgrewritten.stargate.api.network.portal.formatting.StargateComponent;
 
 import java.util.List;
 

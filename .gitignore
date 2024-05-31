@@ -20,10 +20,7 @@ buildNumber.properties
 .idea/misc.xml
 .idea/vcs.xml
 .settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.jdt.core.prefs
 .idea/uiDesigner.xml
-.settings/org.eclipse.jdt.core.prefs
-.settings/org.eclipse.jdt.core.prefs
 .LCKpom.xml~
 .idea/*
 nbactions.xml

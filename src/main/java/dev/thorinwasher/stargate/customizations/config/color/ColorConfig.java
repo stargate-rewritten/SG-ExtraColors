@@ -49,7 +49,7 @@ public class ColorConfig {
 
     public void load(InputStream stream){
         Yaml yaml = new Yaml();
-        Map<String, Object> data = yaml.load(stream);
+        Map<String, Object> data = (Map<String, Object>) yaml.loadAll(stream).iterator().next();
 
         if(data.get(ColorConfigOption.DESTINATION_STYLING_OVERRIDES.name().toLowerCase()) instanceof Map<?,?> overrideData){
             Map<String,Object> overrideDataConverted = (Map<String,Object>) overrideData;

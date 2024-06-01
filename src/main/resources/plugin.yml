@@ -1,9 +1,0 @@
-name: StargateCustomizations
-main: dev.thorinwasher.stargate.customizations.StargateCustomizations
-version: ${project.version}
-description: A style and customization addon for stargate
-authors: [ Thorinwasher, EpicKnarvik97 ]
-website: https://sgrewitten.org/customizations
-api-version: 1.15
-softdepend: [ ColorBukkit, StargateInterfaces ]
-depend: [Stargate]

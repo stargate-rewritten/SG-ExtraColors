@@ -62,7 +62,7 @@
         <dependency>
         	<groupId>org.sgrewritten</groupId>
         	<artifactId>Stargate</artifactId>
-        	<version>1.0.0.16-NIGHTLY-1</version>
+        	<version>1.0.0.16-NIGHTLY-2</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

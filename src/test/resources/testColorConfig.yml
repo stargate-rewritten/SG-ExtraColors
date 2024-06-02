@@ -26,10 +26,10 @@ style:
       text: DARK_BLUE
     STARGATE_PLAYER_OWNER_UUID:
       value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
-    STARGATE_PLAYER_ACTIVATOR_UUID:
-      value: 9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2
+      text: BLUE
     STARGATE_PORTAL_WORLD:
       value: world
+      text: GREEN
 
 destination_styling_overrides:
   # Default destination override

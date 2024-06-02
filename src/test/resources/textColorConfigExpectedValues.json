@@ -1,0 +1,76 @@
+[
+  {
+    "expected": {
+      "text": "GRAY",
+      "pointer": "BLUE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  },
+  {
+    "flags": "A",
+    "expected": {
+      "text": "BLACK",
+      "pointer": "WHITE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  },
+  {
+    "network": "network",
+    "flags": "A",
+    "expected": {
+      "text": "DARK_BLUE",
+      "pointer": "WHITE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  },
+  {
+    "gate": "something.gate",
+    "flags": "A",
+    "expected": {
+      "text": "RED",
+      "pointer": "WHITE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  },
+  {
+    "material": "OAK_WALL_SIGN",
+    "flags": "A",
+    "expected": {
+      "text": "AQUA",
+      "pointer": "WHITE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  },
+  {
+    "ownerUuid": "9d7ea5a0-66f6-4b4a-897f-4ce34757e9f2",
+    "flags": "A",
+    "expected": {
+      "text": "BLUE",
+      "pointer": "WHITE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  },
+  {
+    "world": "world",
+    "flags": "A",
+    "expected": {
+      "text": "GREEN",
+      "pointer": "WHITE",
+      "error": "RED",
+      "network": "GREEN",
+      "glowing": true
+    }
+  }
+]

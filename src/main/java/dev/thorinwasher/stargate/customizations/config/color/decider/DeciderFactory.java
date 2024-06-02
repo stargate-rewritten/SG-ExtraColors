@@ -13,9 +13,7 @@ import org.sgrewritten.stargate.api.network.portal.flag.CustomFlag;
 import org.sgrewritten.stargate.api.network.portal.flag.PortalFlag;
 import org.sgrewritten.stargate.api.network.portal.flag.StargateFlag;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 
 public class DeciderFactory {
@@ -65,19 +63,25 @@ public class DeciderFactory {
                 case STARGATE_PLAYER_ACTIVATOR_UUID -> new ActivatorDecider(theme, UUID.fromString((String) value));
                 case STARGATE_PORTAL_DESIGN -> new GateFormatColorDecider(theme, (String) value);
                 case STARGATE_PORTAL_WORLD -> new WorldDecider(theme, (String) value);
-                case STARGATE_FLAG -> new PortalFlagColorDecider(theme, fetchFlag((String) value));
+                case STARGATE_FLAG -> new PortalFlagColorDecider(theme, fetchFlags((String) value));
             };
         } catch (ClassCastException e) {
             throw new ParseException("Invalid input type for " + ColorConfigOption.VALUE.name().toLowerCase() + " '" + value + "'");
         }
     }
 
-    private static PortalFlag fetchFlag(String aString) throws ParseException {
-        if (aString.length() == 1) {
-            return CustomFlag.getOrCreate(aString.charAt(0));
-        }
+    private static List<PortalFlag> fetchFlags(String aString) throws ParseException {
         try {
-            return StargateFlag.valueOf(aString.toUpperCase());
+            List<PortalFlag> portalFlagList = new ArrayList<>();
+            for (String flagString : aString.split(",")) {
+                flagString = flagString.replace(" ", "");
+                try {
+                    portalFlagList.add(StargateFlag.valueOf(flagString));
+                } catch (IllegalArgumentException e) {
+                    portalFlagList.addAll(PortalFlag.parseFlags(flagString));
+                }
+            }
+            return portalFlagList;
         } catch (IllegalArgumentException e) {
             StringBuilder builder = new StringBuilder(ColorConfigOption.VALUE.name().toLowerCase() + " must be either a character, or one of the following strings: \n");
             for (PortalFlag flag : StargateFlag.values()) {

@@ -10,7 +10,7 @@ style:
     value: ff6bfe79-ad09-4277-8b2b-d63e565dd145 # All gates owned by dinnerbone have blue text
     text: BLUE
     STARGATE_FLAG:
-        value: [PRIVATE, ALWAYS_ON] # Except for dinnerbone's private and hidden portals... those have pink text.
+        value: PRIVATE, ALWAYS_ON # Except for dinnerbone's private and hidden portals... those have pink text.
         text: LIGHT_PURPLE
         PORTAL_DESIGN:
             value: wool.gate #"Unless they are made out of the wool design, then make them blue"

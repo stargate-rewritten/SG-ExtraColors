@@ -44,6 +44,9 @@ public class ColorConfig {
     public void load(File file) throws IOException {
         try(InputStream stream = new FileInputStream(file) ){
             this.load(stream);
+        } catch (IllegalArgumentException e){
+            StargateCustomizations.log(Level.INFO, "Could load config");
+            e.printStackTrace();
         }
     }
 

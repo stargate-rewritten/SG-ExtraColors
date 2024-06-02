@@ -28,7 +28,7 @@ public class StargateCustomizations extends JavaPlugin {
     private static Level logLevel;
 
     public static void log(Level level, String msg) {
-        if(instance == null){
+        if (instance == null) {
             System.out.println("[" + level + "]: " + msg);
             return;
         }
@@ -55,19 +55,19 @@ public class StargateCustomizations extends JavaPlugin {
     private void load() throws InitializationException {
         instance = this;
         loadConfig();
-        logLevel = Level.parse(getConfig().getString(ConfigOption.LOGGING_LEVEL.getKey(),Level.INFO.getName()));
+        logLevel = Level.parse(getConfig().getString(ConfigOption.LOGGING_LEVEL.getKey(), Level.INFO.getName()));
         this.colorConfig = loadColorConfig();
-        if(colorConfig != null) {
+        if (colorConfig != null) {
             this.stargateAPI = this.getStargateAPI();
             LineFormatterStorage storage = new LineFormatterStorage(stargateAPI.getRegistry());
             this.registry = new FormatterRegistry();
             storage.load(registry, colorConfig);
-            Bukkit.getPluginManager().registerEvents(new StargateListener(this.colorConfig,registry,stargateAPI.getRegistry()), this);
+            Bukkit.getPluginManager().registerEvents(new StargateListener(this.colorConfig, registry, stargateAPI.getRegistry()), this);
         }
 
     }
 
-    private void loadConfig(){
+    private void loadConfig() {
         if (!new File(this.getDataFolder(), CONFIG_FILE).exists()) {
             super.saveDefaultConfig();
         }
@@ -75,19 +75,20 @@ public class StargateCustomizations extends JavaPlugin {
 
     private @Nullable ColorConfig loadColorConfig() throws InitializationException {
         String colorConfigTypeString = this.getConfig().getString(ConfigOption.STYLE_SOURCE.getKey());
-        if(colorConfigTypeString == null){
+        if (colorConfigTypeString == null) {
             throw new InitializationException("Invalid configuration, missing configuration option " + ConfigOption.STYLE_SOURCE.getKey());
         }
-        try{
+        try {
             ColorConfigType colorConfigType = ColorConfigType.valueOf(colorConfigTypeString.toUpperCase());
-            return switch (colorConfigType){
+            return switch (colorConfigType) {
                 case NONE -> null;
                 case FILE -> getColorConfigFromFile();
                 case THEME -> {
                     throw new InitializationException(ColorConfigType.THEME.name() + " type " + ConfigOption.STYLE_SOURCE.getKey() + " is not implemented yet");
                 }
             };
-        } catch(IllegalArgumentException ignored){
+        } catch (IllegalArgumentException ignored) {
+            ignored.printStackTrace();
             throw new InitializationException("Invalid configuration, invalid configuration option for " + ConfigOption.STYLE_SOURCE.getKey());
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,11 +97,11 @@ public class StargateCustomizations extends JavaPlugin {
     }
 
     private ColorConfig getColorConfigFromFile() throws IOException {
-        if(!new File(this.getDataFolder(),COLOR_CONFIG_FILE).exists()){
-            this.saveResource("/" + COLOR_CONFIG_FILE,false);
+        if (!new File(this.getDataFolder(), COLOR_CONFIG_FILE).exists()) {
+            this.saveResource(COLOR_CONFIG_FILE, false);
         }
         ColorConfig config = new ColorConfig();
-        config.load(new File(this.getDataFolder(),COLOR_CONFIG_FILE));
+        config.load(new File(this.getDataFolder(), COLOR_CONFIG_FILE));
         return config;
     }
 

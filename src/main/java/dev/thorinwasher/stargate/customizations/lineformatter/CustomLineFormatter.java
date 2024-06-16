@@ -4,7 +4,9 @@ import dev.thorinwasher.stargate.customizations.config.color.ColorConfig;
 import dev.thorinwasher.stargate.customizations.config.color.ColorTheme;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
+import org.sgrewritten.stargate.api.container.Holder;
 import org.sgrewritten.stargate.api.network.portal.RealPortal;
+import org.sgrewritten.stargate.api.network.portal.formatting.LegacyStargateComponent;
 import org.sgrewritten.stargate.api.network.portal.formatting.PortalLine;
 import org.sgrewritten.stargate.api.network.portal.formatting.SignLine;
 import org.sgrewritten.stargate.api.network.portal.formatting.StargateComponent;
@@ -35,22 +37,21 @@ public class CustomLineFormatter {
         }
     }
 
-    private void changeColorOfComponent(StargateComponent component, ChatColor color) {
-        String text = ChatColor.stripColor(component.getLegacyText());
-        component.setLegacyText(color + text);
+    private void changeColorOfComponent(Holder<StargateComponent> component, ChatColor color) {
+        component.value = new LegacyStargateComponent(color + component.value.plainText());
     }
 
     private void handleGeneralLine(SignLine line, ChatColor pointerColor, ChatColor textColor) {
         if (portal.isDestroyed()) {
             return;
         }
-        List<StargateComponent> components = line.getComponents();
+        List<Holder<StargateComponent>> components = line.getComponents();
         if (components.size() == 3) {
             changeColorOfComponent(components.get(0), pointerColor);
             changeColorOfComponent(components.get(1), textColor);
             changeColorOfComponent(components.get(2), pointerColor);
         } else {
-            for (StargateComponent component : components) {
+            for (Holder<StargateComponent> component : components) {
                 changeColorOfComponent(component, textColor);
             }
         }

@@ -79,13 +79,13 @@ jobs:
       - run:
           name: Move valid files
           command: |
-            cd ~/my-projects/stargate/customizations/Stargate-Customizations
-            mkdir ~/my-projects/stargate/customizations/Stargate-Customizations/export
-            cd ~/my-projects/stargate/customizations/Stargate-Customizations
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations/target
+            mkdir ~/my-projects/stargate/customizations/Stargate-Customizations/target/export
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations/target
             mv StargateCustomizations-*.jar export
 
       - store_artifacts:
-          path: ~/my-projects/stargate/customizations/Stargate-Customizations/export
+          path: ~/my-projects/stargate/customizations/Stargate-Customizations/target/export
           destination: build
 
 workflows:

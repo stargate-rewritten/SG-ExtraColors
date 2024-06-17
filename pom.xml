@@ -60,9 +60,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-        	<groupId>org.sgrewritten</groupId>
-        	<artifactId>stargate</artifactId>
-        	<version>1.0.0.16-NIGHTLY</version>
+            <groupId>org.sgrewritten</groupId>
+            <artifactId>stargate</artifactId>
+            <version>1.0.0.16-NIGHTLY</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -86,7 +86,7 @@
     </dependencies>
     
     <build>
-        <finalName>Stargate-${project.version}-${git.commit.id.abbrev}</finalName>
+        <finalName>StargateCustomizations-${project.version}-${git.commit.id.abbrev}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

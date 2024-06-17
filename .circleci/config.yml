@@ -23,6 +23,7 @@ jobs:
           command: |
             echo 127.0.0.1 devhost | tee -a /etc/hosts
             mkdir -p ~/my-projects/stargate/customizations
+            mkdir -p ~/my-projects/stargate/core/Stargate-Bukkit
             cd ~/my-projects/stargate/customizations
 
       - run:
@@ -32,6 +33,10 @@ jobs:
             apt-get update && apt-get install -y mariadb-client
             apt-get install -y git
             apt-get install -y maven
+            apt install -y jq
+            apt install -y wget
+            apt install -y curl
+            apt install -y tree
 
       - run:
           name: Clone Repository
@@ -52,11 +57,24 @@ jobs:
             touch ~/my-projects/stargate/customizations/Stargate-Customizations/src/test/resources/mysql_credentials.secret
             echo MYSQL_DB_PASSWORD=password >> ~/my-projects/stargate/customizations/Stargate-Customizations/src/test/resources/mysql_credentials.secret
             echo MYSQL_DB_USER=root >> ~/my-projects/stargate/customizations/Stargate-Customizations/src/test/resources/mysql_credentials.secret
+
       - run:
           name: Attempt to Build
           command: |
             cd ~/my-projects/stargate/customizations/Stargate-Customizations
-            mvn clean install
+            core_url="$(curl -H 'accept: application/json' https://circleci.com/api/v1.1/project/github/stargate-rewritten/Stargate-Bukkit/latest/artifacts | jq '.[0].url' | tr -d '"')"
+            core_version="$(curl -H 'accept: application/json' https://circleci.com/api/v1.1/project/github/stargate-rewritten/Stargate-Bukkit/latest/artifacts | jq '.[0].path' | tr -d '"' | cut -d - -f 2)"
+            wget "$core_url" -O ~/my-projects/stargate/customizations/Stargate-Customizations/Stargate-"$core_version"-PIPELINE.jar
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations
+            mvn -X install:install-file  -Dfile=Stargate-"$core_version"-PIPELINE.jar \
+                          -DgroupId=org.sgrewritten \
+                          -DartifactId=stargate \
+                          -Dversion="$core_version" \
+                          -Dpackaging=jar \
+                          -DgeneratePom=true
+            tree
+            mvn -X install
+            tree
 
       - save_cache:
           key: maven-data
@@ -67,12 +85,12 @@ jobs:
           name: Move valid files
           command: |
             cd ~/my-projects/stargate/customizations/Stargate-Customizations
-            mkdir ~/my-projects/stargate/customizations/Stargate-Customizations/target/export
-            cd ~/my-projects/stargate/customizations/Stargate-Customizations/target
-            mv Stargate-*.jar export
+            mkdir ~/my-projects/stargate/customizations/Stargate-Customizations/export
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations
+            mv StargateCustomizations-*.jar export
 
       - store_artifacts:
-          path: ~/my-projects/stargate/customizations/Stargate-Customizations/target/export
+          path: ~/my-projects/stargate/customizations/Stargate-Customizations/export
           destination: build
 
 workflows:

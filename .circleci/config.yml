@@ -66,12 +66,7 @@ jobs:
             core_version="$(curl -H 'accept: application/json' https://circleci.com/api/v1.1/project/github/stargate-rewritten/Stargate-Bukkit/latest/artifacts | jq '.[0].path' | tr -d '"' | cut -d - -f 2)"
             wget "$core_url" -O ~/my-projects/stargate/customizations/Stargate-Customizations/Stargate-"$core_version"-PIPELINE.jar
             cd ~/my-projects/stargate/customizations/Stargate-Customizations
-            mvn -X install:install-file  -Dfile=Stargate-"$core_version"-PIPELINE.jar \
-                          -DgroupId=org.sgrewritten \
-                          -DartifactId=stargate \
-                          -Dversion="$core_version" \
-                          -Dpackaging=jar \
-                          -DgeneratePom=true
+            mvn org.apache.maven.plugins:maven-install-plugin:3.1.2:install-file -Dfile=Stargate-"$core_version"-PIPELINE.jar
             tree
             mvn -X install
             tree

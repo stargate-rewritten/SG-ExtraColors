@@ -23,7 +23,6 @@ jobs:
           command: |
             echo 127.0.0.1 devhost | tee -a /etc/hosts
             mkdir -p ~/my-projects/stargate/customizations
-            mkdir -p ~/my-projects/stargate/core/Stargate-Bukkit
             cd ~/my-projects/stargate/customizations
 
       - run:
@@ -36,7 +35,6 @@ jobs:
             apt install -y jq
             apt install -y wget
             apt install -y curl
-            apt install -y tree
 
       - run:
           name: Clone Repository
@@ -67,9 +65,7 @@ jobs:
             wget "$core_url" -O ~/my-projects/stargate/customizations/Stargate-Customizations/Stargate-"$core_version"-PIPELINE.jar
             cd ~/my-projects/stargate/customizations/Stargate-Customizations
             mvn org.apache.maven.plugins:maven-install-plugin:3.1.2:install-file -Dfile=Stargate-"$core_version"-PIPELINE.jar
-            tree
-            mvn -X install
-            tree
+            mvn install
 
       - save_cache:
           key: maven-data

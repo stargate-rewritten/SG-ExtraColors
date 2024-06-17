@@ -5,10 +5,10 @@
   <version>0.1.0-ALPHA</version>
   <name>Stargate Customizations</name>
   <description>A config expansion module for the Stargate Rewitten Bukkit Plugin.</description>
-  <url>https://sgrewitten.org/customizations</url>
+  <url>https://sgrewritten.org/customizations</url>
   <organization>
-        <name>Stargate Rewitten</name>
-        <url>https://sgrewitten.org</url>
+        <name>Stargate Rewritten</name>
+        <url>https://sgrewritten.org</url>
     </organization>
     <developers>
         <developer>
@@ -23,7 +23,7 @@
     <contributors>
         <contributor>
             <name>The contributors of the SGR Project</name>
-            <url>https://sgrewitten.org/credits</url>
+            <url>https://sgrewritten.org/credits</url>
         </contributor>
     </contributors>
   
@@ -86,15 +86,37 @@
     </dependencies>
     
     <build>
-        <finalName>StargateCustomizations-${project.version}</finalName>
+        <finalName>Stargate-${project.version}-${git.commit.id.abbrev}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.13.0</version>
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.github.git-commit-id</groupId>
+                <artifactId>git-commit-id-maven-plugin</artifactId>
+                <version>9.0.0</version>
+                <executions>
+                    <execution>
+                        <id>get-the-git-infos</id>
+                        <goals>
+                            <goal>revision</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generateGitPropertiesFile>true</generateGitPropertiesFile>
+                    <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
+                    <includeOnlyProperties>
+                        <includeOnlyProperty>^git.commit.id.abbrev</includeOnlyProperty>
+                    </includeOnlyProperties>
+                    <commitIdGenerationMode>full</commitIdGenerationMode>
                 </configuration>
             </plugin>
         </plugins>
@@ -104,6 +126,8 @@
                 <filtering>true</filtering>
                 <includes>
                     <include>**</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
                 </includes>
             </resource>
         </resources>

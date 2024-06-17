@@ -3,7 +3,7 @@ version: ${project.version}
 main: dev.thorinwasher.stargate.customizations.StargateCustomizations
 description: An admin utility module for Stargate Rewritten providing wieldiness exceptions (mostly webGUIs and extra config files) 
 authors: [ Thorinwasher, EpicKnarvik97 ]
-website: https://sgrewitten.org/customizations
+website: https://sgrewritten.org/customizations
 api-version: '1.20.4'
 dependencies:
   server:

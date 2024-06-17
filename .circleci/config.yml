@@ -1,0 +1,86 @@
+version: 2.1
+jobs:
+  build-and-test:
+    docker:
+      - image: debian:12.4
+
+      - image: cimg/mariadb:11.2.1
+        environment:
+          MARIADB_ROOT_PASSWORD: password
+          MARIADB_DATABASE: Stargate
+          MARIADB_PASSWORD: password
+
+    environment:
+      TEST_REPORTS: /tmp/test-reports
+
+    working_directory: ~/my-project/stargate/customizations
+
+    steps:
+      - checkout
+
+      - run:
+          name: Debug and Environment
+          command: |
+            echo 127.0.0.1 devhost | tee -a /etc/hosts
+            mkdir -p ~/my-projects/stargate/customizations
+            cd ~/my-projects/stargate/customizations
+
+      - run:
+          name: Install Stuff
+          command: |
+            cd ~/my-projects/stargate/customizations
+            apt-get update && apt-get install -y mariadb-client
+            apt-get install -y git
+            apt-get install -y maven
+
+      - run:
+          name: Clone Repository
+          command: |
+            cd ~/my-projects/stargate/customizations
+            git clone https://github.com/stargate-rewritten/Stargate-Customizations.git
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations
+            git checkout main
+
+      - restore_cache:
+          keys:
+            - maven-data
+
+      - run:
+          name: Populate Secrets File
+          command: |
+            cd ~/my-projects/stargate/customizations
+            touch ~/my-projects/stargate/customizations/Stargate-Customizations/src/test/resources/mysql_credentials.secret
+            echo MYSQL_DB_PASSWORD=password >> ~/my-projects/stargate/customizations/Stargate-Customizations/src/test/resources/mysql_credentials.secret
+            echo MYSQL_DB_USER=root >> ~/my-projects/stargate/customizations/Stargate-Customizations/src/test/resources/mysql_credentials.secret
+      - run:
+          name: Attempt to Build
+          command: |
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations
+            mvn clean install
+
+      - save_cache:
+          key: maven-data
+          paths:
+            - ~/my-projects/stargate/customizations/Stargate-Customizations/target
+
+      - run:
+          name: Move valid files
+          command: |
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations
+            mkdir ~/my-projects/stargate/customizations/Stargate-Customizations/target/export
+            cd ~/my-projects/stargate/customizations/Stargate-Customizations/target
+            mv Stargate-*.jar export
+
+      - store_artifacts:
+          path: ~/my-projects/stargate/customizations/Stargate-Customizations/target/export
+          destination: build
+
+workflows:
+  build-test-deploy:
+    jobs:
+      - build-and-test:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - /feature-.*/

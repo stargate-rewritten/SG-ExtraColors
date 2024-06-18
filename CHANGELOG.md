@@ -17,6 +17,6 @@
 #### [Version 0.0.1]
 
 - Initial release
-- Documentation moved to [here](https://sgrewitten.org/infosgc).
-- Updated to use the new SGR [API](https://sgrewitten.org/api).
+- Documentation moved to [here](https://sgrewritten.org/infosgc).
+- Updated to use the new SGR [API](https://sgrewritten.org/api).
 - Now requires at least Stargate v1.0.0.15

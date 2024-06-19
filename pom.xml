@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.thorinwasher.stargate</groupId>
   <artifactId>StargateCustomizations</artifactId>
-  <version>0.1.0-ALPHA</version>
+  <version>0.1.1-ALPHA</version>
   <name>Stargate Customizations</name>
   <description>A config expansion module for the Stargate Rewritten Bukkit Plugin.</description>
   <url>https://sgrewritten.org/customizations</url>

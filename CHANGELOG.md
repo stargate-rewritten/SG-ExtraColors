@@ -1,5 +1,12 @@
 # Changes
 
+#### [Version 0.1.1]
+
+- Fixed some encoding problems with the configuration; also added general clarifications.
+- Bumps minimum version to Paper 1.20
+- Fixed some problems with application of default colours.
+- Integrated into the main stargate pipeline and fixed some typos.
+
 #### [Version 0.1.0]
 
 - Packaged the below 0.X changes for release.
